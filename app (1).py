@@ -7,6 +7,7 @@ from tempfile import NamedTemporaryFile
 from PyPDF2 import PdfReader
 import google.generativeai as genai
 from itertools import cycle
+from dotenv import load_dotenv
 
 # -------------------- Streamlit Setup --------------------
 st.set_page_config(layout="wide")
@@ -14,13 +15,16 @@ st.title("🧩 Mini Mind Mapper (Smart AI Version)")
 st.write("Upload PDF, TXT, or paste text to generate a clean, colorful, and well-spaced AI mind map.")
 
 # -------------------- Gemini API Key --------------------
-api_key = "AIzaSyBjouZhG_0e6NX3DbBBeCJE0yjpjjVhkgQ"  # 🔒 Replace with your Gemini API key
+load_dotenv()
+
+api_key = os.getenv("GEMINI_API_KEY")
 
 if api_key:
     genai.configure(api_key=api_key)
 else:
-    st.warning("Please enter your Gemini API key to continue.")
+    st.warning("API key not found in .env file")
     st.stop()
+
 
 
 # -------------------- File or Text Input --------------------
